@@ -1,0 +1,153 @@
+# Email Pattern Analyzer Configuration
+# Copy this file to config.yaml and fill in your credentials
+
+# General Settings
+general:
+  log_level: INFO  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  data_directory: ./data
+  cache_enabled: true
+  cache_duration: 3600  # seconds
+
+# Gmail API Configuration
+gmail:
+  enabled: true
+  credentials_file: credentials.json
+  token_file: token.json
+  scopes:
+    - https://www.googleapis.com/auth/gmail.readonly
+    - https://www.googleapis.com/auth/gmail.modify
+  max_results: 1000  # Maximum emails to fetch per request
+  batch_size: 100
+
+# Outlook API Configuration
+outlook:
+  enabled: false
+  client_id: YOUR_CLIENT_ID_HERE
+  client_secret: YOUR_CLIENT_SECRET_HERE
+  tenant_id: YOUR_TENANT_ID_HERE
+  redirect_uri: http://localhost:8000
+  scopes:
+    - https://graph.microsoft.com/Mail.Read
+    - https://graph.microsoft.com/Mail.ReadWrite
+  max_results: 1000
+
+# Analysis Settings
+analysis:
+  # Time range for analysis (in days, 0 = all emails)
+  time_range_days: 365
+  
+  # Minimum occurrences for pattern detection
+  min_pattern_occurrences: 5
+  
+  # Enable advanced analysis features
+  enable_ml_categorization: true
+  enable_sentiment_analysis: false
+  enable_thread_analysis: true
+  
+  # Pattern detection thresholds
+  pattern_thresholds:
+    high_volume_sender: 50  # emails per month
+    frequent_sender: 20
+    spam_likelihood: 0.7  # 0-1 scale
+
+# Categorization Settings
+categorization:
+  # Custom categories (in addition to default ones)
+  custom_categories:
+    - name: VIP
+      keywords: ["urgent", "important", "asap"]
+      senders: ["boss@company.com", "ceo@company.com"]
+      priority: high
+    
+    - name: Newsletters
+      keywords: ["unsubscribe", "newsletter", "digest"]
+      priority: low
+  
+  # Default category confidence threshold
+  confidence_threshold: 0.6
+  
+  # Enable learning from user corrections
+  enable_learning: true
+
+# Filter Suggestion Settings
+filter_suggestions:
+  # Minimum emails required to suggest a filter
+  min_emails_for_suggestion: 10
+  
+  # Confidence threshold for suggestions
+  confidence_threshold: 0.75
+  
+  # Types of suggestions to generate
+  suggestion_types:
+    - auto_archive
+    - auto_label
+    - priority_inbox
+    - spam_detection
+    - auto_delete
+  
+  # Aggressive mode (suggests more filters)
+  aggressive_mode: false
+
+# Statistics Settings
+statistics:
+  # Generate these report types
+  report_types:
+    - daily
+    - weekly
+    - monthly
+    - yearly
+  
+  # Export formats
+  export_formats:
+    - json
+    - csv
+    - html
+  
+  # Chart generation
+  generate_charts: true
+  chart_format: png  # png, svg, pdf
+
+# Performance Settings
+performance:
+  # Number of worker threads for parallel processing
+  num_workers: 4
+  
+  # Memory limit for caching (MB)
+  cache_memory_limit: 500
+  
+  # Enable parallel processing
+  enable_parallel: true
+  
+  # Request rate limiting (requests per second)
+  rate_limit: 10
+
+# Notification Settings (for automated monitoring)
+notifications:
+  enabled: false
+  email:
+    enabled: false
+    smtp_server: smtp.gmail.com
+    smtp_port: 587
+    sender: your-email@gmail.com
+    password: YOUR_APP_PASSWORD
+    recipients:
+      - recipient@example.com
+  
+  webhook:
+    enabled: false
+    url: https://your-webhook-url.com
+    method: POST
+
+# Automation Settings
+automation:
+  # Enable automated monitoring
+  enabled: false
+  
+  # Schedule (cron-style)
+  schedule: "0 0 * * *"  # Daily at midnight
+  
+  # Auto-apply suggested filters
+  auto_apply_filters: false
+  
+  # Require confirmation for high-impact changes
+  require_confirmation: true
